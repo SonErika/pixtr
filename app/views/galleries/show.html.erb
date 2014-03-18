@@ -1,13 +1,14 @@
 <h2><%= @gallery.name %></h2>
 
 <nav>
-  <%= link_to "Edit", edit_gallery_path(@gallery) %>
-  <%= link_to "Delete", @gallery,  method: :delete %>
-  <%= link_to "New image", new_gallery_image_path(@gallery) %>
+  <% if @gallery.user == current_user %> 
+    <%= link_to "Edit", edit_gallery_path(@gallery) %>  
+    <%= link_to "Delete", @gallery,  method: :delete %>
+    <%= link_to "New image", new_gallery_image_path(@gallery) %>
+  <% end %>
+
 </nav>
 
-<% @gallery.images.each do |image| %>
-  <%= link_to image do %>
-    <img src="<%= image.url %>">
-  <% end %>
-<% end %>
+<%= render @images %>
+
+

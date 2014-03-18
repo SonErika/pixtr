@@ -10,12 +10,12 @@ class SessionsController < ApplicationController
       cookies.signed[:user_id] = user.id
     end
   end
-  redirect_to root_path
+  redirect_to gallery_path
 end
 
 def destroy
   cookies.delete :user_id 
-  redirect_to root_path
+  redirect_to gallery_path
 end
 
 end

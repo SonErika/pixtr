@@ -1,5 +1,6 @@
 <h2><%= @image.name %></h2>
 
+<% if @image.user == current_user %> 
 <nav>
   <%= link_to 'Edit', edit_image_path(@image) %>
   <%= link_to 'Delete', @image,
@@ -7,5 +8,28 @@
     confirm: "Are you sure you want to delete this image?" %>
 </nav>
 
-<img src="<%= @image.url %>">
+<% end %>
+
+<%= image_tag(@image.url)%>
 <p><%= @image.description %></p>
+
+<% if signed_in? %>
+  <%= form_for ([@image, @comment]) do |form| %>
+   <%= form.text_area :body %>
+    <%= form.submit "comment" %>
+<%end%>
+<% else %>
+  <%= link_to "Sign In" , sign_in_path %> to comment
+<% end %>
+
+
+<%= render @comments %>
+ 
+
+
+  <% if @comment.user == current_user %>
+     <%= link_to 'Delete', @comment,
+    method: :delete,
+    confirm: "Are you sure you want to delete this image?" %>
+  <% end %>
+

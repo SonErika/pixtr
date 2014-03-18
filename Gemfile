@@ -8,6 +8,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'clearance'
+gem 'binding_of_caller'
 gem 'jbuilder', '~> 1.2'
 group :doc do
   gem 'sdoc', require: false
