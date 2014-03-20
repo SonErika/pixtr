@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140317154645) do
+ActiveRecord::Schema.define(version: 20140319191514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 20140317154645) do
   add_index "comments", ["image_id"], name: "index_comments_on_image_id", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
+  create_table "following_relationships", force: true do |t|
+    t.integer  "followed_user_id"
+    t.integer  "follower_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "following_relationships", ["followed_user_id"], name: "index_following_relationships_on_followed_user_id", using: :btree
+  add_index "following_relationships", ["follower_id"], name: "index_following_relationships_on_follower_id", using: :btree
+
   create_table "galleries", force: true do |t|
     t.string  "name"
     t.integer "user_id"
@@ -34,11 +44,40 @@ ActiveRecord::Schema.define(version: 20140317154645) do
 
   add_index "galleries", ["user_id"], name: "index_galleries_on_user_id", using: :btree
 
+  create_table "group_images", force: true do |t|
+    t.integer  "image_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_images", ["group_id"], name: "index_group_images_on_group_id", using: :btree
+  add_index "group_images", ["image_id"], name: "index_group_images_on_image_id", using: :btree
+
+  create_table "group_memberships", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "member_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
+  add_index "group_memberships", ["member_id"], name: "index_group_memberships_on_member_id", using: :btree
+
+  create_table "groups", force: true do |t|
+    t.text     "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "images", force: true do |t|
-    t.string  "name"
-    t.text    "description"
-    t.string  "url"
-    t.integer "gallery_id"
+    t.string   "name"
+    t.text     "description"
+    t.string   "url"
+    t.integer  "gallery_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

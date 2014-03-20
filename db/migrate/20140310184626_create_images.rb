@@ -5,6 +5,7 @@ class CreateImages < ActiveRecord::Migration
       t.text :description
       t.string :url
       t.integer :gallery_id
+
     end
   end
 end
