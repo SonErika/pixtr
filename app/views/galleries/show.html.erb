@@ -9,6 +9,14 @@
 
 </nav>
 
+
+ <% if current_user.like? @gallery %>
+ <%= button_to "Unlike this gallery", unlike_gallery_path, method: :delete %>
+ <% else %>
+ <%= button_to "Like this gallery" , like_gallery_path%>
+<% end %>
+
+
 <%= render @images %>
 
 

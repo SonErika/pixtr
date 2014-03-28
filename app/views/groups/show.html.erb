@@ -1,4 +1,14 @@
 <h2><%= @group.name %></h2>
 
+<% if signed_in? %>
+  <div id = "join_group_button">
+    <%= render "join_group_button", group: @group %> 
+  </div>
+
+  <div id = "like_group_button">
+    <%= render "like_group_button",group: @group %>
+  </div>
+    
+<% end %>
 
 <%= render @images %>

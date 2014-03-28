@@ -20,6 +20,7 @@ class GalleriesController < ApplicationController
     @gallery = current_user.galleries.new(gallery_params)
 
     if @gallery.save
+      current_user.notify @gallery,"GalleryActivity"
       redirect_to @gallery
     else 
       render :new

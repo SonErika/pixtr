@@ -1,15 +1,22 @@
 <h2><%= @image.name %></h2>
 
+<h2> <%= pluralize(@image.likes.count, "like") %> </h2> 
+
+ <% if !current_user.like? @image %>
+ <%= button_to "Like" , like_image_path(@image) %>
+ <% else %>
+ <%= button_to "Unlike", unlike_image_path(@image), method: :delete %>
+<% end %>
+
+
+
 <% if @image.user == current_user %> 
-<nav>
-  <%= link_to 'Edit', edit_image_path(@image) %>
-  <%= link_to 'Delete', @image,
+  <nav>
+    <%= link_to 'Edit', edit_image_path(@image) %>
+    <%= link_to 'Delete', @image,
     method: :delete,
     confirm: "Are you sure you want to delete this image?" %>
-</nav>
-
-
-
+  </nav>
 <% end %>
 
 <%= image_tag(@image.url)%>
@@ -18,23 +25,20 @@
 <p> Added on: <%= @image.created_at.to_date %> </p>
 
 <% if signed_in? %>
-  <%= form_for ([@image, @comment]) do |form| %>
+  <%= form_for([@image, @comment], remote: true) do |form| %>
    <%= form.text_area :body %>
-    <%= form.submit "comment" %>
-<%end%>
+   <%= form.submit "comment" %>
+  <%end%>
 <% else %>
   <%= link_to "Sign In" , sign_in_path %> to comment
 <% end %>
 
-
+<div id= "comments">
 <%= render @comments %>
-<%= paginate @comments %>
+</div>
+ <%= link_to_next_page @comments,'Load More', remote: true, id: 'next_page' %>
  
 
 
-  <% if @comment.user == current_user %>
-     <%= link_to 'Delete', @comment,
-    method: :delete,
-    confirm: "Are you sure you want to delete this image?" %>
-  <% end %>
+  
 

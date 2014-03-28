@@ -12,11 +12,14 @@
   <nav>
   <ul> 
     <%= link_to 'My Galleries', galleries_path %>
-    <%= link_to 'My Groups', groups_path %>
+    
      <%= link_to 'My images', user_path(current_user) %>
 </ul>
-</nav>
+
 <% end %>
+
+<%= link_to 'Groups', groups_path %>
+</nav>
 
  <% if signed_in? %>
   Signed in as: <%= current_user.email %>

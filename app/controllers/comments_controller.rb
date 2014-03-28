@@ -2,18 +2,20 @@ class CommentsController < ApplicationController
   
   def create
     image = Image.find(params[:image_id])
-    comment = image.comments.create(comment_params)
-    if comment.save
-    redirect_to image
+    @comment = image.comments.create(comment_params)
+    #I made comment an instant variable so that it would get it at the instance neccessary.
+    if @comment.save
+    current_user.notify(@comment, "CommentActivity")     
+    #here I took off the redirect because I did not want it to redirect, instead I wanted it to refresh. 
     else 
       redirect_to image, alert: "Your comment is empty" 
     end
   end
 
   def destroy
-    comment = current_user.comments.find(params[:id])
-    comment.destroy
-    redirect_to comment.image
+    @comment = current_user.comments.find(params[:id])
+    @comment.destroy
+    
   end
 
   private

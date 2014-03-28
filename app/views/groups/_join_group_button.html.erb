@@ -1,0 +1,8 @@
+
+<% if !current_user.member? group %>
+      <%= button_to "Join this group", join_group_path(group), remote: true %>
+    <% elsif %>
+      <%= button_to "Leave Group", leave_group_path(group),
+      remote: true,
+      method: :delete %>
+    <% end %>
