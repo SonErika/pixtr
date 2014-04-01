@@ -1,11 +1,11 @@
 class JoinActivity < Activity
 
   def email
-    subject.member.email
+    actor.email
   end 
   
   def join
-    subject.group
+    target
   end
 
   def join_name

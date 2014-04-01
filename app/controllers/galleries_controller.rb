@@ -8,7 +8,7 @@ class GalleriesController < ApplicationController
 
   def show
     @gallery = Gallery.find(params[:id])
-    @images = @gallery.images
+    @images = @gallery.images.includes(gallery: [:user])
   end
 
   def new
@@ -18,9 +18,8 @@ class GalleriesController < ApplicationController
   def create
     #associate the gallery with the user 
     @gallery = current_user.galleries.new(gallery_params)
-
     if @gallery.save
-      current_user.notify @gallery,"GalleryActivity"
+      current_user.notify(@gallery, @gallery, "GalleryActivity")
       redirect_to @gallery
     else 
       render :new
@@ -34,7 +33,7 @@ class GalleriesController < ApplicationController
   def update
     @gallery = current_user.galleries.find(params[:id])
     if @gallery.update(gallery_params)
-    redirect_to @gallery
+    redirect_to gallery_path
     else 
       render :edit 
     end
@@ -43,7 +42,7 @@ class GalleriesController < ApplicationController
   def destroy
     gallery = current_user.galleries.find(params[:id])
     gallery.destroy
-    redirect_to root_path
+    redirect_to galleries_path
   end
 
   private

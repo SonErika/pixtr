@@ -1,11 +1,11 @@
 class CommentActivity < Activity
 
   def email
-    subject.user.email
+    actor.email
   end 
   
   def commented_image
-    subject.image
+    target
   end
 
   def comment_name

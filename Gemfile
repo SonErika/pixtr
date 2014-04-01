@@ -11,6 +11,11 @@ gem 'turbolinks'
 gem 'clearance'
 gem 'binding_of_caller'
 gem 'jbuilder', '~> 1.2'
+gem 'bourbon'
+gem 'neat', '~> 1.6.0'
+gem 'quiet_assets'
+gem 'bullet'
+gem 'delayed_job_active_record'
 group :doc do
   gem 'sdoc', require: false
 end
@@ -19,4 +24,6 @@ group :production do
 end 
 group :development do
   gem 'pry'
+  gem 'sqlite3'
+  gem 'daemons'
 end

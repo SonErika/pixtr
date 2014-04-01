@@ -1,10 +1,10 @@
 class GalleryActivity < Activity
   def email
-    subject.user.email
+    actor.email
   end
     
     def gallery
-    subject
+    target
   end
 
   def gallery_name

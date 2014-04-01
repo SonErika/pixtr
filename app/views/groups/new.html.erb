@@ -1,4 +1,4 @@
-<%= form_for([@group], remote:true) do |form| %>
+<%= form_for @group do |form| %>
   <%= render 'form_errors', target: @group %>
   <div>
     <%= form.text_field :name, placeholder: "Name" %>

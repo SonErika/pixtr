@@ -11,19 +11,19 @@ class GroupsController < ApplicationController
   def create 
     @group = Group.new(group_params)
     if @group.save
-     current_user.join @group
-    redirect_to @group
-  else
-    render :new
-  end
+      current_user.join @group
+      redirect_to @group
+    else
+      render :new
+    end
   end
 
   def show
     @group = Group.find(params[:id])
-    @images = @group.images
+    @images = @group.images.includes(gallery:[:user])
   end 
 
-private
+  private
 
   def group_params
     params.require(:group).permit(

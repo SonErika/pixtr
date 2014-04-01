@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   def follow user
     
     following_relationship = followed_user_relationships.create(followed_user: user)
-    notify(following_relationship, "FollowActivity")
+    notify(following_relationship, user, "FollowActivity")
   end
 
   def following? user
@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
 
    def join group
     group_membership = group_memberships.create(group: group)
-      notify(group_membership, "JoinActivity")
+      notify(group_membership, group, "JoinActivity")
   end 
 
   def leave group
@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
 
    def like target
     like = likes.create(likable: target)
-    notify like, "LikeActivity"
+    notify(like, target, "LikeActivity")
   end
   
   def like? target
@@ -73,13 +73,24 @@ class User < ActiveRecord::Base
     like.destroy
   end
 
+  # JoinedGroupActivity
+  # --------------------
+  # Sonia Joined a Group
+  # Actor Subject  Target
+  #          |
+  #      GroupMembership
 
-  def notify(subject, type) 
+  def notify(subject, target, type)
     if subject.persisted? 
       followers.each do |follower|
-        follower.activities.create(subject: subject, type: type)
-        ActivityMailer.activity_email(subject).deliver
+        activities = follower.activities.create(
+          subject: subject,
+          type: type,
+          actor: self,
+          target: target)
+        ActivityMailer.activity_email(activities).deliver
       end
     end
   end
+  handle_asynchronously :notify
 end
