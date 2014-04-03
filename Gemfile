@@ -26,4 +26,6 @@ group :development do
   gem 'pry'
   gem 'sqlite3'
   gem 'daemons'
+  gem 'acts-as-taggable-on'
+  gem 'devise', '3.0.0.rc'
 end

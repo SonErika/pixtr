@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   include Clearance::User
 
+
   has_many :followed_user_relationships, foreign_key: :follower_id,
   class_name: "FollowingRelationship", dependent: :destroy
   has_many :followed_users, through: :followed_user_relationships

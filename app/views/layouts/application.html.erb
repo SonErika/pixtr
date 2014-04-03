@@ -19,6 +19,11 @@
 <% end %>
 
 <%= link_to 'Groups', groups_path %>
+
+<%= form_for(:search, url: search_path, method: :get) do |form| %>
+  <%= form.text_field :query, placeholder:"Search Here" %>
+  <%= form.submit "Search" %>
+  <%end %>
 </nav>
 
  <% if signed_in? %>

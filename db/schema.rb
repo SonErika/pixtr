@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140401140448) do
+ActiveRecord::Schema.define(version: 20140403061034) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "activities", force: true do |t|
     t.integer  "user_id"
@@ -25,8 +28,8 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.integer  "actor_id"
   end
 
-  add_index "activities", ["subject_id", "subject_type"], name: "index_activities_on_subject_id_and_subject_type"
-  add_index "activities", ["user_id"], name: "index_activities_on_user_id"
+  add_index "activities", ["subject_id", "subject_type"], name: "index_activities_on_subject_id_and_subject_type", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.integer  "user_id"
@@ -36,8 +39,8 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.datetime "updated_at"
   end
 
-  add_index "comments", ["image_id"], name: "index_comments_on_image_id"
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+  add_index "comments", ["image_id"], name: "index_comments_on_image_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -53,7 +56,7 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "following_relationships", force: true do |t|
     t.integer  "followed_user_id"
@@ -62,15 +65,15 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.datetime "updated_at"
   end
 
-  add_index "following_relationships", ["followed_user_id"], name: "index_following_relationships_on_followed_user_id"
-  add_index "following_relationships", ["follower_id"], name: "index_following_relationships_on_follower_id"
+  add_index "following_relationships", ["followed_user_id"], name: "index_following_relationships_on_followed_user_id", using: :btree
+  add_index "following_relationships", ["follower_id"], name: "index_following_relationships_on_follower_id", using: :btree
 
   create_table "galleries", force: true do |t|
     t.string  "name"
     t.integer "user_id"
   end
 
-  add_index "galleries", ["user_id"], name: "index_galleries_on_user_id"
+  add_index "galleries", ["user_id"], name: "index_galleries_on_user_id", using: :btree
 
   create_table "group_images", force: true do |t|
     t.integer  "image_id"
@@ -79,8 +82,8 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.datetime "updated_at"
   end
 
-  add_index "group_images", ["group_id"], name: "index_group_images_on_group_id"
-  add_index "group_images", ["image_id"], name: "index_group_images_on_image_id"
+  add_index "group_images", ["group_id"], name: "index_group_images_on_group_id", using: :btree
+  add_index "group_images", ["image_id"], name: "index_group_images_on_image_id", using: :btree
 
   create_table "group_memberships", force: true do |t|
     t.integer  "group_id"
@@ -89,8 +92,8 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.datetime "updated_at"
   end
 
-  add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id"
-  add_index "group_memberships", ["member_id"], name: "index_group_memberships_on_member_id"
+  add_index "group_memberships", ["group_id"], name: "index_group_memberships_on_group_id", using: :btree
+  add_index "group_memberships", ["member_id"], name: "index_group_memberships_on_member_id", using: :btree
 
   create_table "groups", force: true do |t|
     t.text     "name"
@@ -116,8 +119,26 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.string   "likable_type"
   end
 
-  add_index "likes", ["likable_type", "likable_id"], name: "index_likes_on_likable_type_and_likable_id"
-  add_index "likes", ["user_id"], name: "index_likes_on_user_id"
+  add_index "likes", ["likable_type", "likable_id"], name: "index_likes_on_likable_type_and_likable_id", using: :btree
+  add_index "likes", ["user_id"], name: "index_likes_on_user_id", using: :btree
+
+  create_table "taggings", force: true do |t|
+    t.integer  "tag_id"
+    t.integer  "image_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "taggings", ["image_id"], name: "index_taggings_on_image_id", using: :btree
+  add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+
+  create_table "tags", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "created_at",                     null: false
@@ -128,7 +149,7 @@ ActiveRecord::Schema.define(version: 20140401140448) do
     t.string   "remember_token",     limit: 128, null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email"
-  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end

@@ -8,8 +8,6 @@
  <%= button_to "Unlike", unlike_image_path(@image), method: :delete %>
 <% end %>
 
-
-
 <% if @image.user == current_user %> 
   <nav>
     <%= link_to 'Edit', edit_image_path(@image) %>
@@ -21,6 +19,12 @@
 
 <%= image_tag(@image.url)%>
 <p><%= @image.description %></p>
+<p><%= link_to @image.user.email, @image.user %></p>
+
+<% @tags.each do |tag| %>
+  <%= link_to tag.name, tag %>
+<% end %>
+
 <p> Added by: <%= link_to @image.user.email, @image.user%> </p>
 <p> Added on: <%= @image.created_at.to_date %> </p>
 

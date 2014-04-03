@@ -3,6 +3,9 @@ Pixtr::Application.routes.draw do
 
   root "homes#show"
   resource :dashboard, only: [:show]
+  resources :tags, only: [:show]
+
+  resource :search, only: [:show]
 
   resources :users, only: [:show] do
     member do #/users/:id/
@@ -36,9 +39,10 @@ resources :images, except: [:index, :new, :create, ] do
   member do 
     post "like" => "image_likes#create"
     delete "unlike" => "image_likes#destroy"
-  end
-  resources :comments, only: [:create]
-end 
+  end 
+    resources :comments, only: [:create]
+  end 
+
 
 end
 

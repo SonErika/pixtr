@@ -1,5 +1,10 @@
 class ImagesController < ApplicationController 
 
+  def index
+    @images = Image.tagged_with(params[:tag])
+    @results = Image.search(params[:search]) 
+end
+
   def new
     @gallery = current_user.galleries.find(params[:gallery_id])
     @image = Image.new
@@ -7,7 +12,7 @@ class ImagesController < ApplicationController
 
   def create
     @gallery = current_user.galleries.find(params[:gallery_id])
-    @image = @gallery.images.create(image_params)
+    @image = @gallery.images.new(image_params)
     if @image.save
       redirect_to @gallery
     else 
@@ -18,12 +23,11 @@ class ImagesController < ApplicationController
   def show
     @image = Image.find(params[:id])
     @comment = Comment.new
-    @comments = @image.comments.includes(:user)
-    @comments = @comments.recent.page(params[:page]).per(2)  
+    @comments = Comment.recent.page(params[:page]).per(2).includes(:user)
+    @tags = @image.tags 
   end
 
   def edit
-
     @image = current_user.images.find(params[:id])
     @groups = current_user.groups 
   end
@@ -52,6 +56,7 @@ class ImagesController < ApplicationController
       :name,
       :url,
       :description,
+      :tag_list,
       group_ids:[]
     )
   end
