@@ -1,9 +1,10 @@
 class GroupMembershipsController < ApplicationController
 
   def create
-    @group = Group.find(params[:id])
-    current_user.join @group
-    render :change
+    group = Group.find(params[:id])
+    group_membership = current_user.join group
+    notify_followers(group_membership, group)
+    redirect_to group
   end 
 
   def destroy 

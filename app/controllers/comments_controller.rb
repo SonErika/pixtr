@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     @comment = image.comments.create(comment_params)
     #I made comment an instant variable so that it would get it at the instance neccessary.
     if @comment.save
-    current_user.notify(@comment, comment_params, "CommentActivity")     
+    notify_followers(comment, image)     
     #here I took off the redirect because I did not want it to redirect, instead I wanted it to refresh. 
     else 
       redirect_to image, alert: "Your comment is empty" 

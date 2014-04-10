@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+
 gem 'rails', '4.0.3'
 gem 'kaminari'
 gem 'pg'
@@ -16,6 +17,8 @@ gem 'neat', '~> 1.6.0'
 gem 'quiet_assets'
 gem 'bullet'
 gem 'delayed_job_active_record'
+gem 'stripe'
+
 group :doc do
   gem 'sdoc', require: false
 end
@@ -28,4 +31,6 @@ group :development do
   gem 'daemons'
   gem 'acts-as-taggable-on'
   gem 'devise', '3.0.0.rc'
+
+  gem 'dotenv-rails'
 end

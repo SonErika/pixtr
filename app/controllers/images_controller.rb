@@ -1,5 +1,5 @@
 class ImagesController < ApplicationController 
-
+  respond_to :html
   def index
     @images = Image.tagged_with(params[:tag])
     @results = Image.search(params[:search]) 
@@ -11,12 +11,10 @@ end
   end
 
   def create
-    @gallery = current_user.galleries.find(params[:gallery_id])
-    @image = @gallery.images.new(image_params)
-    if @image.save
-      redirect_to @gallery
-    else 
-      render :new
+    image = find_image
+    like = current_user.like image
+    notify_followers(like, image)
+      redirect_to @image
     end
   end
 
@@ -60,4 +58,8 @@ end
       group_ids:[]
     )
   end
+
+  def find_image
+    Image.find(params[:id])
 end
+end 

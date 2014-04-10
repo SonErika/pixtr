@@ -1,5 +1,7 @@
 class GalleriesController < ApplicationController
   before_filter :authorize, except: (:show)
+  respond_to :html
+
   def index
     @galleries = Gallery.all
     @galleries = current_user.galleries
@@ -19,28 +21,25 @@ class GalleriesController < ApplicationController
     #associate the gallery with the user 
     @gallery = current_user.galleries.new(gallery_params)
     if @gallery.save
-      current_user.notify(@gallery, @gallery, "GalleryActivity")
-      redirect_to @gallery
+      notify_followers(@gallery, @gallery)
     else 
       render :new
     end
   end
 #current_user.galleries.create(gallery_params)
   def edit
-    @gallery = current_user.galleries.find(params[:id])
+    @gallery = find_gallery
   end
 
   def update
-    @gallery = current_user.galleries.find(params[:id])
-    if @gallery.update(gallery_params)
-    redirect_to gallery_path
-    else 
-      render :edit 
-    end
+    @gallery = find_gallery
+    @gallery.update(gallery_params)
+    respond_with @gallery 
+    
   end
 
   def destroy
-    gallery = current_user.galleries.find(params[:id])
+   gallery = find_gallery
     gallery.destroy
     redirect_to galleries_path
   end
@@ -50,4 +49,11 @@ class GalleriesController < ApplicationController
   def gallery_params
     params.require(:gallery).permit(:name)
   end
+
+  def find_gallery
+
+    current_user.galleries.find(params[:id])
+  end 
+
+
 end

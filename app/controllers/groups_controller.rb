@@ -11,7 +11,8 @@ class GroupsController < ApplicationController
   def create 
     @group = Group.new(group_params)
     if @group.save
-      current_user.join @group
+      group_membership = current_user.join @group
+      notify_followers(group_membership, group)
       redirect_to @group
     else
       render :new
@@ -31,4 +32,8 @@ class GroupsController < ApplicationController
       :description
     )
   end
+
+  def find_images(group)
+    group.images.includes(gallery: [:user])
+  end 
 end 

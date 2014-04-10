@@ -2,7 +2,8 @@ class GroupLikesController < ApplicationController
 
  def create
     @group = Group.find(params[:id])
-    current_user.like @group 
+    like = current_user.like @group 
+    notify_followers(like, group)
     render :change
   end
 
